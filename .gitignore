@@ -1,0 +1,36 @@
+# Build artifacts
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+build/
+
+# Visual Studio user/state files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/
+project.lock.json
+
+# Publish output
+[Pp]ublish/
+*.pubxml.user
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Secrets / environment
+appsettings.*.Local.json
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db
