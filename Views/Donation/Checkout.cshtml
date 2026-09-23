@@ -1,4 +1,5 @@
-﻿@{
+@model GiftOfTheGivers.ViewModels.DonationCheckoutViewModel
+@{
     ViewData["Title"] = "Make a Donation";
 }
 
@@ -28,7 +29,9 @@
 
                 <div class="donation-card">
 
-                    <form>
+                    <form asp-controller="Donation"
+                          asp-action="Checkout"
+                          method="post">
 
                         <!-- DONATION TYPE -->
 
@@ -46,10 +49,9 @@
 
                                 <label class="donation-option">
 
-                                    <input type="radio"
-                                           name="donationType"
-                                           value="one-time"
-                                           checked>
+                                    <input asp-for="DonationType"
+                                           type="radio"
+                                           value="OneTime">
 
                                     <span>
                                         <strong>One-time</strong>
@@ -63,9 +65,9 @@
 
                                 <label class="donation-option">
 
-                                    <input type="radio"
-                                           name="donationType"
-                                           value="recurring">
+                                    <input asp-for="DonationType"
+                                           type="radio"
+                                           value="Recurring">
 
                                     <span>
                                         <strong>Recurring</strong>
@@ -77,6 +79,8 @@
                                 </label>
 
                             </div>
+
+                            <span asp-validation-for="DonationType" class="text-danger"></span>
 
                         </div>
 
@@ -93,10 +97,9 @@
                                 Select your preferred currency.
                             </p>
 
-                            <select class="form-select"
-                                    name="currency">
+                            <select asp-for="Currency" class="form-select">
 
-                                <option value="ZAR" selected>
+                                <option value="ZAR">
                                     ZAR - South African Rand
                                 </option>
 
@@ -109,6 +112,8 @@
                                 </option>
 
                             </select>
+
+                            <span asp-validation-for="Currency" class="text-danger"></span>
 
                         </div>
 
@@ -131,32 +136,40 @@
                                     Amount
                                 </span>
 
-                                <input type="number"
+                                <input asp-for="Amount"
+                                       type="number"
                                        class="form-control"
                                        placeholder="500"
-                                       min="1">
+                                       min="1"
+                                       step="any">
 
                             </div>
+
+                            <span asp-validation-for="Amount" class="text-danger"></span>
 
                             <div class="quick-amounts">
 
                                 <button type="button"
-                                        class="quick-amount">
+                                        class="quick-amount"
+                                        data-amount="100">
                                     100
                                 </button>
 
                                 <button type="button"
-                                        class="quick-amount">
+                                        class="quick-amount"
+                                        data-amount="250">
                                     250
                                 </button>
 
                                 <button type="button"
-                                        class="quick-amount">
+                                        class="quick-amount"
+                                        data-amount="500">
                                     500
                                 </button>
 
                                 <button type="button"
-                                        class="quick-amount">
+                                        class="quick-amount"
+                                        data-amount="1000">
                                     1000
                                 </button>
 
@@ -165,7 +178,7 @@
                         </div>
 
 
-                        <!-- DONOR TYPE -->
+                        <!-- DONOR DETAILS -->
 
                         <div class="donation-form-section">
 
@@ -181,11 +194,11 @@
 
                             <div class="anonymous-option">
 
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       id="anonymousDonation">
+                                <input asp-for="IsAnonymous"
+                                       class="form-check-input"
+                                       type="checkbox">
 
-                                <label for="anonymousDonation">
+                                <label asp-for="IsAnonymous">
 
                                     <strong>
                                         Donate anonymously
@@ -205,26 +218,48 @@
 
                                 <div class="col-md-6">
 
-                                    <label class="form-label">
+                                    <label asp-for="DonorName" class="form-label">
                                         Full Name
                                     </label>
 
-                                    <input type="text"
+                                    <input asp-for="DonorName"
+                                           type="text"
                                            class="form-control"
                                            placeholder="Enter your name">
+
+                                    <span asp-validation-for="DonorName" class="text-danger"></span>
 
                                 </div>
 
 
                                 <div class="col-md-6">
 
-                                    <label class="form-label">
+                                    <label asp-for="Email" class="form-label">
                                         Email Address
                                     </label>
 
-                                    <input type="email"
+                                    <input asp-for="Email"
+                                           type="email"
                                            class="form-control"
                                            placeholder="Enter your email">
+
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <label asp-for="Phone" class="form-label">
+                                        Phone (optional)
+                                    </label>
+
+                                    <input asp-for="Phone"
+                                           type="tel"
+                                           class="form-control"
+                                           placeholder="Enter your phone number">
+
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
 
                                 </div>
 
@@ -241,29 +276,15 @@
                                 Support a Project
                             </h3>
 
-                            <select class="form-select">
-
-                                <option selected>
-                                    General Relief Fund
-                                </option>
-
-                                <option>
-                                    Gauteng Flood Relief
-                                </option>
-
-                                <option>
-                                    Limpopo Food Relief
-                                </option>
-
-                                <option>
-                                    Medical Assistance
-                                </option>
-
-                                <option>
-                                    Community Support
-                                </option>
-
+                            <select asp-for="ProjectId"
+                                    asp-items="ViewBag.Projects"
+                                    class="form-select">
                             </select>
+
+                            <p class="form-help mt-2">
+                                Leave on General Relief Fund to let our teams
+                                allocate your donation where it is needed most.
+                            </p>
 
                         </div>
 
@@ -278,8 +299,8 @@
                                     Donation
                                 </span>
 
-                                <strong>
-                                    R500
+                                <strong id="summaryAmount">
+                                    R0.00
                                 </strong>
 
                             </div>
@@ -290,7 +311,7 @@
                                     Frequency
                                 </span>
 
-                                <strong>
+                                <strong id="summaryFrequency">
                                     One-time
                                 </strong>
 
@@ -301,15 +322,14 @@
 
                         <!-- CONTINUE -->
 
-                        <a asp-controller="Donation"
-                           asp-action="Confirmation"
-                           class="btn btn-primary-custom w-100">
+                        <button type="submit"
+                                class="btn btn-primary-custom w-100">
 
                             <i class="bi bi-heart-fill me-2"></i>
 
                             Continue Donation
 
-                        </a>
+                        </button>
 
                         <p class="donation-note text-center">
 
@@ -329,3 +349,56 @@
     </div>
 
 </section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (function () {
+            var symbols = { ZAR: 'R', USD: '$', EUR: '\u20AC' };
+            var amountInput = document.getElementById('Amount');
+            var currencySelect = document.getElementById('Currency');
+            var summaryAmount = document.getElementById('summaryAmount');
+            var summaryFrequency = document.getElementById('summaryFrequency');
+
+            function updateSummary() {
+                var symbol = symbols[currencySelect.value] || '';
+                var amount = parseFloat(amountInput.value || '0');
+                summaryAmount.textContent = symbol + amount.toFixed(2);
+
+                var selected = document.querySelector('input[name="DonationType"]:checked');
+                summaryFrequency.textContent =
+                    (selected && selected.value === 'Recurring') ? 'Recurring' : 'One-time';
+            }
+
+            currencySelect.addEventListener('change', updateSummary);
+            amountInput.addEventListener('input', updateSummary);
+
+            document.querySelectorAll('input[name="DonationType"]').forEach(function (radio) {
+                radio.addEventListener('change', updateSummary);
+            });
+
+            document.querySelectorAll('.quick-amount').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    amountInput.value = button.dataset.amount;
+                    updateSummary();
+                });
+            });
+
+            var anonymous = document.getElementById('IsAnonymous');
+            var nameInput = document.getElementById('DonorName');
+
+            anonymous.addEventListener('change', function () {
+                nameInput.disabled = anonymous.checked;
+                if (anonymous.checked) {
+                    nameInput.value = '';
+                }
+            });
+            nameInput.disabled = anonymous.checked;
+
+            updateSummary();
+        })();
+    </script>
+}

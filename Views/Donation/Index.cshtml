@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Donate";
 }
 
@@ -51,6 +51,10 @@
                     </div>
 
 
+                    <form asp-controller="Donation"
+                          asp-action="Checkout"
+                          method="get">
+
                     <!-- DONATION TYPE -->
 
                     <div class="form-group-custom">
@@ -64,6 +68,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="donationType"
+                                   value="OneTime"
                                    id="oneTime"
                                    checked>
 
@@ -86,6 +91,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="donationType"
+                                   value="Recurring"
                                    id="recurring">
 
                             <label class="donation-option"
@@ -121,6 +127,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="currency"
+                                   value="ZAR"
                                    id="zar"
                                    checked>
 
@@ -135,6 +142,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="currency"
+                                   value="USD"
                                    id="usd">
 
                             <label class="currency-option"
@@ -148,6 +156,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="currency"
+                                   value="EUR"
                                    id="eur">
 
                             <label class="currency-option"
@@ -175,6 +184,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="amount"
+                                   value="100"
                                    id="amount100"
                                    checked>
 
@@ -189,6 +199,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="amount"
+                                   value="250"
                                    id="amount250">
 
                             <label class="amount-option"
@@ -202,6 +213,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="amount"
+                                   value="500"
                                    id="amount500">
 
                             <label class="amount-option"
@@ -215,6 +227,7 @@
                             <input type="radio"
                                    class="btn-check"
                                    name="amount"
+                                   value="1000"
                                    id="amount1000">
 
                             <label class="amount-option"
@@ -229,7 +242,10 @@
 
                         <input type="number"
                                class="form-control mt-3"
-                               placeholder="Or enter your own amount">
+                               name="customAmount"
+                               placeholder="Or enter your own amount"
+                               min="1"
+                               step="any">
 
                     </div>
 
@@ -246,7 +262,9 @@
 
                             <input class="form-check-input"
                                    type="checkbox"
-                                   id="anonymousDonation">
+                                   id="anonymousDonation"
+                                   name="anonymous"
+                                   value="true">
 
                             <label class="form-check-label"
                                    for="anonymousDonation">
@@ -264,6 +282,7 @@
 
                                 <input type="text"
                                        class="form-control"
+                                       name="firstName"
                                        placeholder="First Name">
 
                             </div>
@@ -272,6 +291,7 @@
 
                                 <input type="text"
                                        class="form-control"
+                                       name="lastName"
                                        placeholder="Last Name">
 
                             </div>
@@ -280,6 +300,7 @@
 
                                 <input type="email"
                                        class="form-control"
+                                       name="email"
                                        placeholder="Email Address">
 
                             </div>
@@ -297,27 +318,21 @@
                             Support a Specific Project
                         </label>
 
-                        <select class="form-select">
+                        <select class="form-select" name="project">
 
-                            <option selected>
+                            <option value="">
                                 General Humanitarian Support
                             </option>
 
-                            <option>
-                                Gauteng Flood Relief
-                            </option>
-
-                            <option>
-                                Limpopo Food Relief
-                            </option>
-
-                            <option>
-                                Medical Assistance
-                            </option>
-
-                            <option>
-                                Community Support
-                            </option>
+                            @foreach (var item in ViewBag.Projects)
+                            {
+                                if (!string.IsNullOrEmpty(item.Value))
+                                {
+                                    <option value="@item.Value">
+                                        @item.Text
+                                    </option>
+                                }
+                            }
 
                         </select>
 
@@ -326,7 +341,7 @@
 
                     <!-- SUBMIT -->
 
-                    <button type="button"
+                    <button type="submit"
                             class="btn btn-primary-custom donation-submit">
 
                         <i class="bi bi-heart-fill me-2"></i>
@@ -344,6 +359,8 @@
                         be processed.
 
                     </p>
+
+                    </form>
 
                 </div>
 

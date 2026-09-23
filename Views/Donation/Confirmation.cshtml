@@ -1,5 +1,21 @@
-﻿@{
+@model GiftOfTheGivers.Models.Donation
+@{
     ViewData["Title"] = "Donation Confirmation";
+
+    var symbol = Model.Currency switch
+    {
+        "USD" => "$",
+        "EUR" => "\u20AC",
+        "GBP" => "\u00A3",
+        _ => "R"
+    };
+
+    var donorDisplay = (Model.IsAnonymous || string.IsNullOrWhiteSpace(Model.DonorName))
+        ? "Anonymous Donor"
+        : Model.DonorName!;
+
+    var typeDisplay = Model.DonationType == "Recurring" ? "Recurring" : "One-time";
+    var certificateNumber = $"GOTG-{Model.CreatedAt.Year}-{Model.Id:D4}";
 }
 
 <section class="donation-confirmation">
@@ -29,23 +45,33 @@
             <div class="confirmation-summary">
 
                 <div>
+                    <span>Reference</span>
+                    <strong>@Model.Reference</strong>
+                </div>
+
+                <div>
                     <span>Donation Amount</span>
-                    <strong>R500.00</strong>
+                    <strong>@symbol@Model.Amount.ToString("N2")</strong>
                 </div>
 
                 <div>
                     <span>Donation Type</span>
-                    <strong>One-time</strong>
+                    <strong>@typeDisplay</strong>
                 </div>
 
                 <div>
                     <span>Currency</span>
-                    <strong>ZAR</strong>
+                    <strong>@Model.Currency</strong>
                 </div>
 
                 <div>
                     <span>Donor</span>
-                    <strong>Anonymous</strong>
+                    <strong>@donorDisplay</strong>
+                </div>
+
+                <div>
+                    <span>Supporting</span>
+                    <strong>@(Model.Project?.Title ?? "General Relief Fund")</strong>
                 </div>
 
             </div>
@@ -117,7 +143,20 @@
                         </span>
 
                         <strong>
-                            GOTG-2026-0001
+                            @certificateNumber
+                        </strong>
+
+                    </div>
+
+
+                    <div class="certificate-row">
+
+                        <span>
+                            Reference
+                        </span>
+
+                        <strong>
+                            @Model.Reference
                         </strong>
 
                     </div>
@@ -130,7 +169,7 @@
                         </span>
 
                         <strong>
-                            Anonymous Donor
+                            @donorDisplay
                         </strong>
 
                     </div>
@@ -143,7 +182,7 @@
                         </span>
 
                         <strong>
-                            R500.00
+                            @symbol@Model.Amount.ToString("N2")
                         </strong>
 
                     </div>
@@ -156,7 +195,7 @@
                         </span>
 
                         <strong>
-                            ZAR
+                            @Model.Currency
                         </strong>
 
                     </div>
@@ -169,7 +208,7 @@
                         </span>
 
                         <strong>
-                            One-time
+                            @typeDisplay
                         </strong>
 
                     </div>
@@ -182,7 +221,7 @@
                         </span>
 
                         <strong>
-                            20 August 2026
+                            @Model.CreatedAt.ToString("dd MMMM yyyy")
                         </strong>
 
                     </div>
@@ -246,3 +285,14 @@
     </div>
 
 </section>
+
+
+@section Scripts {
+
+    <script>
+        function showTaxCertificate() {
+            var preview = document.getElementById('taxCertificatePreview');
+            preview.style.display = (preview.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
+}

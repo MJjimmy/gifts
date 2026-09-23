@@ -19,6 +19,9 @@ public class Volunteer
     /// <summary>Availability, e.g. "Weekends", "Weekdays".</summary>
     public string Availability { get; set; } = "Weekends";
 
+    /// <summary>Preferred volunteering area, e.g. "Food Distribution".</summary>
+    public string? AreaOfInterest { get; set; }
+
     /// <summary>Why they want to volunteer (free text).</summary>
     public string? Motivation { get; set; }
 
