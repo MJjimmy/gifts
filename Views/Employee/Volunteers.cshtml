@@ -1,4 +1,5 @@
-﻿@{
+@model GiftOfTheGivers.ViewModels.VolunteerManagementViewModel
+@{
     ViewData["Title"] = "Volunteer Sign-ups";
 }
 
@@ -17,7 +18,7 @@
                 <h1>Volunteer Sign-ups</h1>
 
                 <p>
-                    View people who have registered their interest
+                    Review people who have registered their interest
                     in supporting relief projects.
                 </p>
             </div>
@@ -26,8 +27,8 @@
                 <i class="bi bi-person-circle"></i>
 
                 <div>
-                    <strong>Employee</strong>
-                    <small>Administrator</small>
+                    <strong>@(User.Identity?.Name ?? "Employee")</strong>
+                    <small>Employee</small>
                 </div>
             </div>
 
@@ -46,8 +47,8 @@
                     </div>
 
                     <div>
-                        <span>Total Volunteers</span>
-                        <h3>124</h3>
+                        <span>Total Registrations</span>
+                        <h3>@Model.TotalCount</h3>
                     </div>
 
                 </div>
@@ -64,8 +65,8 @@
                     </div>
 
                     <div>
-                        <span>Available</span>
-                        <h3>87</h3>
+                        <span>Approved</span>
+                        <h3>@Model.ApprovedCount</h3>
                     </div>
 
                 </div>
@@ -82,8 +83,8 @@
                     </div>
 
                     <div>
-                        <span>New Registrations</span>
-                        <h3>12</h3>
+                        <span>Pending Review</span>
+                        <h3>@Model.PendingCount</h3>
                     </div>
 
                 </div>
@@ -91,6 +92,20 @@
             </div>
 
         </div>
+
+
+        @if (TempData["Success"] is string successMessage)
+        {
+            <div class="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                <div>
+                    @successMessage
+                </div>
+
+            </div>
+        }
 
 
         <!-- VOLUNTEER TABLE -->
@@ -128,10 +143,12 @@
                         <tr>
 
                             <th>Name</th>
+                            <th>Contact</th>
                             <th>Skills</th>
                             <th>Availability</th>
-                            <th>Project Interest</th>
+                            <th>Area of Interest</th>
                             <th>Status</th>
+                            <th>Actions</th>
 
                         </tr>
 
@@ -139,120 +156,95 @@
 
                     <tbody>
 
-                        <tr>
+                        @if (Model.Volunteers.Any())
+                        {
+                            @foreach (var volunteer in Model.Volunteers)
+                            {
+                                <tr>
 
-                            <td>
-                                <strong>
-                                    Thabo Mokoena
-                                </strong>
-                            </td>
+                                    <td>
+                                        <strong>@volunteer.FullName</strong>
+                                        <small class="d-block text-muted">
+                                            @volunteer.CreatedAt.ToString("dd MMM yyyy")
+                                        </small>
+                                    </td>
 
-                            <td>
-                                First Aid
-                            </td>
+                                    <td>
+                                        @volunteer.Email
+                                        <small class="d-block text-muted">@volunteer.Phone</small>
+                                    </td>
 
-                            <td>
-                                Weekends
-                            </td>
+                                    <td>@(string.IsNullOrWhiteSpace(volunteer.Skills) ? "-" : volunteer.Skills)</td>
 
-                            <td>
-                                Medical Assistance
-                            </td>
+                                    <td>@volunteer.Availability</td>
 
-                            <td>
-                                <span class="volunteer-status">
-                                    Available
-                                </span>
-                            </td>
+                                    <td>@(volunteer.AreaOfInterest ?? "-")</td>
 
-                        </tr>
+                                    <td>
+                                        <span class="volunteer-status">
+                                            @volunteer.Status
+                                        </span>
+                                    </td>
 
+                                    <td>
 
-                        <tr>
+                                        <div class="d-flex gap-2">
 
-                            <td>
-                                <strong>
-                                    Lerato Molefe
-                                </strong>
-                            </td>
+                                            @if (volunteer.Status != "Approved")
+                                            {
+                                                <form asp-controller="Employee"
+                                                      asp-action="SetVolunteerStatus"
+                                                      asp-route-id="@volunteer.Id"
+                                                      asp-route-status="Approved"
+                                                      method="post">
 
-                            <td>
-                                Food Distribution
-                            </td>
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-success"
+                                                            title="Approve registration">
 
-                            <td>
-                                Full Time
-                            </td>
+                                                        <i class="bi bi-check-lg"></i>
 
-                            <td>
-                                Food Relief
-                            </td>
+                                                    </button>
 
-                            <td>
-                                <span class="volunteer-status">
-                                    Available
-                                </span>
-                            </td>
+                                                </form>
+                                            }
 
-                        </tr>
+                                            @if (volunteer.Status != "Declined")
+                                            {
+                                                <form asp-controller="Employee"
+                                                      asp-action="SetVolunteerStatus"
+                                                      asp-route-id="@volunteer.Id"
+                                                      asp-route-status="Declined"
+                                                      method="post">
 
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-danger"
+                                                            title="Decline registration">
 
-                        <tr>
+                                                        <i class="bi bi-x-lg"></i>
 
-                            <td>
-                                <strong>
-                                    Kabelo Dlamini
-                                </strong>
-                            </td>
+                                                    </button>
 
-                            <td>
-                                Logistics
-                            </td>
+                                                </form>
+                                            }
 
-                            <td>
-                                Weekdays
-                            </td>
+                                        </div>
 
-                            <td>
-                                Flood Relief
-                            </td>
+                                    </td>
 
-                            <td>
-                                <span class="volunteer-status">
-                                    Available
-                                </span>
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>
-                                <strong>
-                                    Naledi Khumalo
-                                </strong>
-                            </td>
-
-                            <td>
-                                Administration
-                            </td>
-
-                            <td>
-                                Weekends
-                            </td>
-
-                            <td>
-                                Community Support
-                            </td>
-
-                            <td>
-                                <span class="volunteer-status">
-                                    Available
-                                </span>
-                            </td>
-
-                        </tr>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    No volunteer registrations yet. Sign-ups from the
+                                    <a asp-controller="Volunteer" asp-action="Index">Volunteer page</a>
+                                    will appear here.
+                                </td>
+                            </tr>
+                        }
 
                     </tbody>
 

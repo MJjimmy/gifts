@@ -1,4 +1,5 @@
-﻿@{
+@model GiftOfTheGivers.ViewModels.PostUpdateViewModel
+@{
     ViewData["Title"] = "Post Project Update";
 }
 
@@ -25,8 +26,8 @@
                 <i class="bi bi-person-circle"></i>
 
                 <div>
-                    <strong>Employee</strong>
-                    <small>Administrator</small>
+                    <strong>@(User.Identity?.Name ?? "Employee")</strong>
+                    <small>Employee</small>
                 </div>
             </div>
 
@@ -47,39 +48,44 @@
                         Update Relief Project
                     </h2>
 
-                    <form>
+                    @if (TempData["Success"] is string successMessage)
+                    {
+                        <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <div>
+                                @successMessage
+                            </div>
+
+                        </div>
+                    }
+
+                    <form asp-controller="Employee"
+                          asp-action="PostUpdate"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <!-- PROJECT -->
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="ProjectId" class="form-label">
                                 Select Project
                             </label>
 
-                            <select class="form-select">
+                            <select asp-for="ProjectId"
+                                    asp-items="ViewBag.Projects"
+                                    class="form-select">
 
-                                <option selected>
+                                <option value="">
                                     Select a relief project
                                 </option>
 
-                                <option>
-                                    Gauteng Flood Relief
-                                </option>
-
-                                <option>
-                                    Limpopo Food Relief
-                                </option>
-
-                                <option>
-                                    Medical Assistance
-                                </option>
-
-                                <option>
-                                    Community Support
-                                </option>
-
                             </select>
+
+                            <span asp-validation-for="ProjectId" class="text-danger"></span>
 
                         </div>
 
@@ -88,13 +94,16 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Title" class="form-label">
                                 Update Title
                             </label>
 
-                            <input type="text"
+                            <input asp-for="Title"
+                                   type="text"
                                    class="form-control"
                                    placeholder="Enter update title">
+
+                            <span asp-validation-for="Title" class="text-danger"></span>
 
                         </div>
 
@@ -103,15 +112,22 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
-                                Project Progress
+                            <label asp-for="ProgressPercent" class="form-label">
+                                Project Progress (optional)
                             </label>
 
-                            <input type="number"
+                            <input asp-for="ProgressPercent"
+                                   type="number"
                                    class="form-control"
                                    placeholder="Enter progress percentage"
                                    min="0"
                                    max="100">
+
+                            <span asp-validation-for="ProgressPercent" class="text-danger"></span>
+
+                            <div class="form-text">
+                                If provided, the project's progress bar will be updated to this percentage.
+                            </div>
 
                         </div>
 
@@ -120,27 +136,16 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Body" class="form-label">
                                 Update Description
                             </label>
 
-                            <textarea class="form-control"
+                            <textarea asp-for="Body"
+                                      class="form-control"
                                       rows="7"
                                       placeholder="Describe the latest project progress..."></textarea>
 
-                        </div>
-
-
-                        <!-- DATE -->
-
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Update Date
-                            </label>
-
-                            <input type="date"
-                                   class="form-control">
+                            <span asp-validation-for="Body" class="text-danger"></span>
 
                         </div>
 
@@ -160,7 +165,7 @@
                             </a>
 
 
-                            <button type="button"
+                            <button type="submit"
                                     class="btn btn-primary-custom">
 
                                 <i class="bi bi-send-fill me-2"></i>
@@ -182,3 +187,9 @@
     </div>
 
 </section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -37,12 +37,21 @@ with relief projects and project updates.
       confirmation page with reference number (e.g. `GTG-20260924-K7QX2M`) and
       placeholder tax certificate
 - [x] Volunteer sign-up form with validation → saved to DB
+- [x] Authentication & roles: ASP.NET Core Identity — register, login, logout,
+      lockout protection, `Employee` role guarding the portal
+- [x] Employee portal: live dashboard (projects, volunteers, updates, donations),
+      recent donations & sign-ups, volunteer approvals, posting project updates
+      (with optional progress-bar update)
+
+### Seeded accounts
+| Role     | Email               | Password      |
+|----------|---------------------|---------------|
+| Employee | `employee@gotg.org` | `Employee123` |
 
 ### Roadmap
-- [ ] Employee portal: live statistics, post project updates, manage volunteers
-- [ ] Authentication & roles (register / login, employee-only area)
 - [ ] Contact form → save messages
 - [ ] Migrations instead of `EnsureCreated`
+- [ ] Donation history for logged-in donors
 
 ## Project structure
 

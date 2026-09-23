@@ -1,4 +1,5 @@
 using GiftOfTheGivers.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GiftOfTheGivers.Data;
@@ -8,11 +9,39 @@ namespace GiftOfTheGivers.Data;
 /// </summary>
 public static class DbSeeder
 {
-    public static async Task InitializeAsync(AppDbContext db)
+    public static async Task InitializeAsync(AppDbContext db, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         // Creates the database if it does not exist yet.
         // (Switch to MigrateAsync once EF migrations are added.)
         await db.Database.EnsureCreatedAsync();
+
+        // Seed roles.
+        foreach (var roleName in new[] { "Employee", "Admin" })
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+        }
+
+        // Seed the default employee account.
+        const string employeeEmail = "employee@gotg.org";
+        if (await userManager.FindByEmailAsync(employeeEmail) == null)
+        {
+            var employee = new AppUser
+            {
+                UserName = employeeEmail,
+                Email = employeeEmail,
+                FullName = "Relief Coordinator",
+                EmailConfirmed = true
+            };
+
+            var createResult = await userManager.CreateAsync(employee, "Employee123");
+            if (createResult.Succeeded)
+            {
+                await userManager.AddToRoleAsync(employee, "Employee");
+            }
+        }
 
         if (await db.Projects.AnyAsync())
         {

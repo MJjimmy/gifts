@@ -1,5 +1,8 @@
-﻿@{
+@model GiftOfTheGivers.ViewModels.EmployeeDashboardViewModel
+@{
     ViewData["Title"] = "Employee Dashboard";
+
+    var currencySymbols = new Dictionary<string, string> { ["ZAR"] = "R", ["USD"] = "$", ["EUR"] = "\u20AC" };
 }
 
 <section class="employee-dashboard">
@@ -26,8 +29,8 @@
                 <i class="bi bi-person-circle"></i>
 
                 <div>
-                    <strong>Employee</strong>
-                    <small>Administrator</small>
+                    <strong>@(User.Identity?.Name ?? "Employee")</strong>
+                    <small>Employee</small>
                 </div>
             </div>
 
@@ -37,7 +40,7 @@
         <!-- STATISTICS -->
         <div class="row g-4 mb-5">
 
-            <div class="col-md-4">
+            <div class="col-md-3 col-6">
 
                 <div class="dashboard-stat">
 
@@ -47,7 +50,7 @@
 
                     <div>
                         <span>Active Projects</span>
-                        <h3>8</h3>
+                        <h3>@Model.ActiveProjects</h3>
                     </div>
 
                 </div>
@@ -55,7 +58,7 @@
             </div>
 
 
-            <div class="col-md-4">
+            <div class="col-md-3 col-6">
 
                 <div class="dashboard-stat">
 
@@ -65,7 +68,7 @@
 
                     <div>
                         <span>Volunteers</span>
-                        <h3>124</h3>
+                        <h3>@Model.VolunteerCount</h3>
                     </div>
 
                 </div>
@@ -73,7 +76,7 @@
             </div>
 
 
-            <div class="col-md-4">
+            <div class="col-md-3 col-6">
 
                 <div class="dashboard-stat">
 
@@ -83,7 +86,26 @@
 
                     <div>
                         <span>Project Updates</span>
-                        <h3>36</h3>
+                        <h3>@Model.UpdateCount</h3>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6">
+
+                <div class="dashboard-stat">
+
+                    <div class="stat-icon">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <div>
+                        <span>Donations</span>
+                        <h3>@Model.DonationCount</h3>
+                        <small>R @Model.TotalDonated.ToString("N2")</small>
                     </div>
 
                 </div>
@@ -204,7 +226,177 @@
         </div>
 
 
-        <!-- RECENT PROJECTS -->
+        <!-- RECENT DONATIONS -->
+
+        <div class="dashboard-section-header">
+
+            <div>
+
+                <span class="section-label">
+                    LATEST SUPPORT
+                </span>
+
+                <h2>Recent Donations</h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="volunteer-table-card mb-5">
+
+            <div class="table-responsive">
+
+                <table class="table volunteer-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Reference</th>
+                            <th>Donor</th>
+                            <th>Project</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.RecentDonations.Any())
+                        {
+                            @foreach (var donation in Model.RecentDonations)
+                            {
+                                var symbol = currencySymbols.GetValueOrDefault(donation.Currency, "R");
+                                var donor = donation.IsAnonymous || string.IsNullOrWhiteSpace(donation.DonorName)
+                                    ? "Anonymous"
+                                    : donation.DonorName;
+
+                                <tr>
+
+                                    <td>
+                                        <strong>@donation.Reference</strong>
+                                    </td>
+
+                                    <td>@donor</td>
+
+                                    <td>@(donation.Project?.Title ?? "General Relief Fund")</td>
+
+                                    <td>@symbol@donation.Amount.ToString("N2")</td>
+
+                                    <td>@donation.CreatedAt.ToString("dd MMM yyyy")</td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    No donations received yet.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT VOLUNTEER SIGN-UPS -->
+
+        <div class="dashboard-section-header">
+
+            <div>
+
+                <span class="section-label">
+                    NEW REGISTRATIONS
+                </span>
+
+                <h2>Recent Volunteer Sign-ups</h2>
+
+            </div>
+
+            <a asp-controller="Employee"
+               asp-action="Volunteers"
+               class="dashboard-view-all">
+
+                View All
+
+            </a>
+
+        </div>
+
+
+        <div class="volunteer-table-card mb-5">
+
+            <div class="table-responsive">
+
+                <table class="table volunteer-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Area of Interest</th>
+                            <th>Availability</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.RecentVolunteers.Any())
+                        {
+                            @foreach (var volunteer in Model.RecentVolunteers)
+                            {
+                                <tr>
+
+                                    <td>
+                                        <strong>@volunteer.FullName</strong>
+                                    </td>
+
+                                    <td>@(volunteer.AreaOfInterest ?? "-")</td>
+
+                                    <td>@volunteer.Availability</td>
+
+                                    <td>
+                                        <span class="volunteer-status">
+                                            @volunteer.Status
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    No volunteer registrations yet.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- ONGOING PROJECTS -->
 
         <div class="dashboard-section-header">
 
@@ -231,38 +423,40 @@
 
         <div class="dashboard-projects">
 
-            <!-- PROJECT 1 -->
+            @foreach (var project in Model.OngoingProjects)
+            {
 
-            <div class="dashboard-project">
+                <div class="dashboard-project">
 
-                <div class="project-status">
-                    Ongoing
-                </div>
+                    <div class="project-status">
+                        @project.Status
+                    </div>
 
-                <div class="project-content">
+                    <div class="project-content">
 
-                    <h4>
-                        Gauteng Flood Relief
-                    </h4>
+                        <h4>
+                            @project.Title
+                        </h4>
 
-                    <p>
-                        Providing food, water and essential
-                        supplies to affected communities.
-                    </p>
+                        <p>
+                            @project.Summary
+                        </p>
 
-                    <div class="project-progress">
+                        <div class="project-progress">
 
-                        <div class="progress-info">
+                            <div class="progress-info">
 
-                            <span>Progress</span>
-                            <strong>70%</strong>
+                                <span>Progress</span>
+                                <strong>@project.ProgressPercent%</strong>
 
-                        </div>
+                            </div>
 
-                        <div class="progress">
+                            <div class="progress">
 
-                            <div class="progress-bar"
-                                 style="width: 70%">
+                                <div class="progress-bar"
+                                     style="width: @(project.ProgressPercent)%">
+                                </div>
+
                             </div>
 
                         </div>
@@ -271,93 +465,7 @@
 
                 </div>
 
-            </div>
-
-
-            <!-- PROJECT 2 -->
-
-            <div class="dashboard-project">
-
-                <div class="project-status">
-                    Ongoing
-                </div>
-
-                <div class="project-content">
-
-                    <h4>
-                        Limpopo Food Relief
-                    </h4>
-
-                    <p>
-                        Delivering food parcels to families
-                        experiencing food insecurity.
-                    </p>
-
-                    <div class="project-progress">
-
-                        <div class="progress-info">
-
-                            <span>Progress</span>
-                            <strong>55%</strong>
-
-                        </div>
-
-                        <div class="progress">
-
-                            <div class="progress-bar"
-                                 style="width: 55%">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PROJECT 3 -->
-
-            <div class="dashboard-project">
-
-                <div class="project-status">
-                    Ongoing
-                </div>
-
-                <div class="project-content">
-
-                    <h4>
-                        Medical Assistance
-                    </h4>
-
-                    <p>
-                        Supporting communities with medical
-                        supplies and healthcare assistance.
-                    </p>
-
-                    <div class="project-progress">
-
-                        <div class="progress-info">
-
-                            <span>Progress</span>
-                            <strong>40%</strong>
-
-                        </div>
-
-                        <div class="progress">
-
-                            <div class="progress-bar"
-                                 style="width: 40%">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            }
 
         </div>
 

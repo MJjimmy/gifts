@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<section class="account-section">
+
+    <div class="container">
+
+        <div class="account-card text-center">
+
+            <div class="account-header text-center">
+
+                <div class="account-icon">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+
+                <span class="section-label">
+                    RESTRICTED AREA
+                </span>
+
+                <h1>Access Denied</h1>
+
+                <p>
+                    You do not have permission to view this page.
+                    Employee access is required.
+                </p>
+
+            </div>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-primary-custom">
+
+                <i class="bi bi-house-fill me-2"></i>
+
+                Return Home
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
