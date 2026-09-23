@@ -1,0 +1,7 @@
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\GiftOfTheGivers.exe
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\appsettings.Development.json
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\appsettings.json
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\GiftOfTheGivers.dll
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\GiftOfTheGivers.deps.json
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\GiftOfTheGivers.runtimeconfig.json
+C:\Users\Student\Source\Repos\GiftOfTheGivers\obj\Release\net9.0\PubTmp\Out\GiftOfTheGivers.pdb

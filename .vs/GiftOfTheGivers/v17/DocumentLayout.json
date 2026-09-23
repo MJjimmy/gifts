@@ -1,0 +1,182 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B153B7D0-3700-49D1-8C6C-A277826D3827}|..\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj|c:\\users\\student\\source\\repos\\giftsofthegiverlibrary\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|c:\\users\\student\\source\\repos\\giftofthegivers\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|c:\\users\\student\\source\\repos\\giftofthegivers\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC62A76E-34F5-4E43-8118-F1DE70BE1BE5}|..\\Function\\Function.csproj|c:\\users\\student\\source\\repos\\function\\local.settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC62A76E-34F5-4E43-8118-F1DE70BE1BE5}|..\\Function\\Function.csproj|c:\\users\\student\\source\\repos\\function\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC62A76E-34F5-4E43-8118-F1DE70BE1BE5}|..\\Function\\Function.csproj|c:\\users\\student\\source\\repos\\function\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|c:\\users\\student\\source\\repos\\giftofthegivers\\giftofthegivers.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|solutionrelative:giftofthegivers.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B153B7D0-3700-49D1-8C6C-A277826D3827}|..\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj|c:\\users\\student\\source\\repos\\giftsofthegiverlibrary\\giftsofthegiverlibrary.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EC62A76E-34F5-4E43-8118-F1DE70BE1BE5}|..\\Function\\Function.csproj|c:\\users\\student\\source\\repos\\function\\function1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|c:\\users\\student\\source\\repos\\giftofthegivers\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1722D32E-83BF-409C-A34D-6C576758585D}|GiftOfTheGivers.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "local.settings.json",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\Function\\local.settings.json",
+              "RelativeDocumentMoniker": "..\\Function\\local.settings.json",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\Function\\local.settings.json*",
+              "RelativeToolTip": "..\\Function\\local.settings.json*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-23T22:07:49.478Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-23T22:04:57.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAswAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T13:20:58.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Account.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\Function\\Account.cs",
+              "RelativeDocumentMoniker": "..\\Function\\Account.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\Function\\Account.cs",
+              "RelativeToolTip": "..\\Function\\Account.cs",
+              "ViewState": "AgIAAAEAAACoZWZmZmYBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T13:20:38.244Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GiftOfTheGivers.csproj",
+              "DocumentMoniker": "C:\\Users\\Student\\Source\\Repos\\GiftOfTheGivers\\GiftOfTheGivers.csproj",
+              "RelativeDocumentMoniker": "GiftOfTheGivers.csproj",
+              "ToolTip": "C:\\Users\\Student\\Source\\Repos\\GiftOfTheGivers\\GiftOfTheGivers.csproj",
+              "RelativeToolTip": "GiftOfTheGivers.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-09-23T13:18:39.734Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "GiftsOfTheGiverLibrary.csproj",
+              "DocumentMoniker": "C:\\Users\\Student\\Source\\Repos\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj",
+              "RelativeDocumentMoniker": "..\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj",
+              "ToolTip": "C:\\Users\\Student\\Source\\Repos\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj",
+              "RelativeToolTip": "..\\GiftsOfTheGiverLibrary\\GiftsOfTheGiverLibrary.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-09-23T13:18:02.128Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\GiftsOfTheGiverLibrary\\Class1.cs",
+              "RelativeDocumentMoniker": "..\\GiftsOfTheGiverLibrary\\Class1.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\GiftsOfTheGiverLibrary\\Class1.cs",
+              "RelativeToolTip": "..\\GiftsOfTheGiverLibrary\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T13:02:28.496Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\Function\\Program.cs",
+              "RelativeDocumentMoniker": "..\\Function\\Program.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\Function\\Program.cs",
+              "RelativeToolTip": "..\\Function\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T13:21:39.519Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Function1.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\Function\\Function1.cs",
+              "RelativeDocumentMoniker": "..\\Function\\Function1.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\Function\\Function1.cs",
+              "RelativeToolTip": "..\\Function\\Function1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T12:58:01.901Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Student\\source\\repos\\GiftOfTheGivers\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-23T11:02:53.976Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
