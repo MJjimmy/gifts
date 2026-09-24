@@ -1,4 +1,5 @@
-﻿@{
+@model GiftOfTheGivers.ViewModels.VolunteerSignupViewModel
+@{
     ViewData["Title"] = "Volunteer";
 }
 
@@ -73,20 +74,37 @@
 
                     </div>
 
+                    @if (TempData["Success"] is string successMessage)
+                    {
+                        <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
 
-                    <form>
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <div>
+                                @successMessage
+                            </div>
+
+                        </div>
+                    }
+
+                    <form asp-controller="Volunteer"
+                          asp-action="Index"
+                          method="post">
 
                         <!-- NAME -->
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="FullName" class="form-label">
                                 Full Name
                             </label>
 
-                            <input type="text"
+                            <input asp-for="FullName"
+                                   type="text"
                                    class="form-control"
                                    placeholder="Enter your full name">
+
+                            <span asp-validation-for="FullName" class="text-danger"></span>
 
                         </div>
 
@@ -95,13 +113,16 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Email" class="form-label">
                                 Email Address
                             </label>
 
-                            <input type="email"
+                            <input asp-for="Email"
+                                   type="email"
                                    class="form-control"
                                    placeholder="Enter your email address">
+
+                            <span asp-validation-for="Email" class="text-danger"></span>
 
                         </div>
 
@@ -110,13 +131,16 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Phone" class="form-label">
                                 Phone Number
                             </label>
 
-                            <input type="tel"
+                            <input asp-for="Phone"
+                                   type="tel"
                                    class="form-control"
                                    placeholder="Enter your phone number">
+
+                            <span asp-validation-for="Phone" class="text-danger"></span>
 
                         </div>
 
@@ -125,13 +149,16 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Skills" class="form-label">
                                 Skills
                             </label>
 
-                            <textarea class="form-control"
+                            <textarea asp-for="Skills"
+                                      class="form-control"
                                       rows="4"
                                       placeholder="Tell us about your skills or experience"></textarea>
+
+                            <span asp-validation-for="Skills" class="text-danger"></span>
 
                         </div>
 
@@ -140,33 +167,35 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="Availability" class="form-label">
                                 Availability
                             </label>
 
-                            <select class="form-select">
+                            <select asp-for="Availability" class="form-select">
 
-                                <option selected>
+                                <option value="">
                                     Select your availability
                                 </option>
 
-                                <option>
+                                <option value="Weekdays">
                                     Weekdays
                                 </option>
 
-                                <option>
+                                <option value="Weekends">
                                     Weekends
                                 </option>
 
-                                <option>
+                                <option value="Both weekdays and weekends">
                                     Both weekdays and weekends
                                 </option>
 
-                                <option>
+                                <option value="Emergency response only">
                                     Emergency response only
                                 </option>
 
                             </select>
+
+                            <span asp-validation-for="Availability" class="text-danger"></span>
 
                         </div>
 
@@ -175,37 +204,39 @@
 
                         <div class="mb-4">
 
-                            <label class="form-label">
+                            <label asp-for="AreaOfInterest" class="form-label">
                                 Area of Interest
                             </label>
 
-                            <select class="form-select">
+                            <select asp-for="AreaOfInterest" class="form-select">
 
-                                <option selected>
+                                <option value="">
                                     Select an area
                                 </option>
 
-                                <option>
+                                <option value="Food Distribution">
                                     Food Distribution
                                 </option>
 
-                                <option>
+                                <option value="Medical Assistance">
                                     Medical Assistance
                                 </option>
 
-                                <option>
+                                <option value="Emergency Relief">
                                     Emergency Relief
                                 </option>
 
-                                <option>
+                                <option value="Community Support">
                                     Community Support
                                 </option>
 
-                                <option>
+                                <option value="Administration">
                                     Administration
                                 </option>
 
                             </select>
+
+                            <span asp-validation-for="AreaOfInterest" class="text-danger"></span>
 
                         </div>
 
@@ -214,24 +245,26 @@
 
                         <div class="form-check mb-4">
 
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   id="volunteerAgreement">
+                            <input asp-for="Agreement"
+                                   class="form-check-input"
+                                   type="checkbox">
 
-                            <label class="form-check-label"
-                                   for="volunteerAgreement">
+                            <label asp-for="Agreement"
+                                   class="form-check-label">
 
                                 I agree to be contacted regarding
                                 volunteer opportunities.
 
                             </label>
 
+                            <span asp-validation-for="Agreement" class="text-danger d-block"></span>
+
                         </div>
 
 
                         <!-- SUBMIT -->
 
-                        <button type="button"
+                        <button type="submit"
                                 class="btn btn-primary-custom w-100">
 
                             <i class="bi bi-person-plus-fill me-2"></i>
@@ -338,3 +371,9 @@
     </div>
 
 </section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}

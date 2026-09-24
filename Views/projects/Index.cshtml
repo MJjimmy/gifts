@@ -1,4 +1,5 @@
-﻿@{
+@model List<GiftOfTheGivers.Models.Project>
+@{
     ViewData["Title"] = "Relief Projects";
 }
 
@@ -30,395 +31,84 @@
 
     <div class="container">
 
-        <div class="row g-4">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <h3>No projects yet</h3>
+                <p class="text-muted">Relief projects will appear here once they are added.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
 
-            <!-- PROJECT 1 -->
-            <div class="col-lg-4 col-md-6">
+                @foreach (var project in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
 
-                <div class="project-card">
+                        <div class="project-card">
 
-                    <div class="project-image">
+                            <div class="project-image">
 
-                        <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=700&q=80"
-                             alt="Flood relief">
+                                <img src="@project.ImageUrl"
+                                     alt="@project.Title">
 
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            Gauteng, South Africa
-                        </small>
-
-                        <h4>
-                            Gauteng Flood Relief
-                        </h4>
-
-                        <p>
-                            Providing emergency food, clean water
-                            and essential supplies to communities
-                            affected by flooding.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 70%;">
-                                </div>
+                                <span class="project-status">
+                                    @project.Status
+                                </span>
 
                             </div>
 
-                            <small>
-                                Project progress: 70%
-                            </small>
+                            <div class="project-content">
 
-                        </div>
+                                <small>
+                                    <i class="bi bi-geo-alt"></i>
+                                    @project.Location
+                                </small>
 
-                        <a asp-controller="Projects"
-                           asp-action="Details"
-                           asp-route-id="1"
-                           class="project-link">
+                                <h4>
+                                    @project.Title
+                                </h4>
 
-                            View Project
-                            <i class="bi bi-arrow-right"></i>
+                                <p>
+                                    @project.Summary
+                                </p>
 
-                        </a>
+                                <div class="project-progress">
 
-                    </div>
+                                    <div class="progress">
 
-                </div>
+                                        <div class="progress-bar"
+                                             style="width: @project.ProgressPercent%;">
+                                        </div>
 
-            </div>
+                                    </div>
 
+                                    <small>
+                                        Project progress: @project.ProgressPercent%
+                                    </small>
 
-            <!-- PROJECT 2 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="project-card">
-
-                    <div class="project-image">
-
-                        <img src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?auto=format&fit=crop&w=700&q=80"
-                             alt="Food relief">
-
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            Limpopo, South Africa
-                        </small>
-
-                        <h4>
-                            Limpopo Food Relief
-                        </h4>
-
-                        <p>
-                            Delivering food parcels and essential
-                            supplies to vulnerable households.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 55%;">
                                 </div>
+
+                                <a asp-controller="Projects"
+                                   asp-action="Details"
+                                   asp-route-id="@project.Id"
+                                   class="project-link">
+
+                                    View Project
+                                    <i class="bi bi-arrow-right"></i>
+
+                                </a>
 
                             </div>
 
-                            <small>
-                                Project progress: 55%
-                            </small>
-
                         </div>
 
-                        <a asp-controller="Projects"
-                           asp-action="Details"
-                           asp-route-id="2"
-                           class="project-link">
-
-                            View Project
-                            <i class="bi bi-arrow-right"></i>
-
-                        </a>
-
                     </div>
-
-                </div>
+                }
 
             </div>
-
-
-            <!-- PROJECT 3 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="project-card">
-
-                    <div class="project-image">
-
-                        <img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=700&q=80"
-                             alt="Medical assistance">
-
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            KwaZulu-Natal, South Africa
-                        </small>
-
-                        <h4>
-                            Medical Assistance
-                        </h4>
-
-                        <p>
-                            Supporting communities with medical
-                            supplies and emergency healthcare.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 40%;">
-                                </div>
-
-                            </div>
-
-                            <small>
-                                Project progress: 40%
-                            </small>
-
-                        </div>
-
-                        <a href="#"
-                           class="project-link">
-
-                            View Project
-
-                            <i class="bi bi-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PROJECT 4 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="project-card">
-
-                    <div class="project-image">
-
-                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=700&q=80"
-                             alt="Community support">
-
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            Eastern Cape, South Africa
-                        </small>
-
-                        <h4>
-                            Community Support
-                        </h4>
-
-                        <p>
-                            Supporting families with essential
-                            household resources and food.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 80%;">
-                                </div>
-
-                            </div>
-
-                            <small>
-                                Project progress: 80%
-                            </small>
-
-                        </div>
-
-                        <a href="#"
-                           class="project-link">
-
-                            View Project
-
-                            <i class="bi bi-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PROJECT 5 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="project-card">
-
-                    <div class="project-image">
-
-                        <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=700&q=80"
-                             alt="Education support">
-
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            Mpumalanga, South Africa
-                        </small>
-
-                        <h4>
-                            Education Support
-                        </h4>
-
-                        <p>
-                            Providing educational resources to
-                            children in underserved communities.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 35%;">
-                                </div>
-
-                            </div>
-
-                            <small>
-                                Project progress: 35%
-                            </small>
-
-                        </div>
-
-                        <a href="#"
-                           class="project-link">
-
-                            View Project
-
-                            <i class="bi bi-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PROJECT 6 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="project-card">
-
-                    <div class="project-image">
-
-                        <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=700&q=80"
-                             alt="Emergency relief">
-
-                        <span class="project-status">
-                            Ongoing
-                        </span>
-
-                    </div>
-
-                    <div class="project-content">
-
-                        <small>
-                            <i class="bi bi-geo-alt"></i>
-                            North West, South Africa
-                        </small>
-
-                        <h4>
-                            Emergency Relief
-                        </h4>
-
-                        <p>
-                            Coordinating emergency resources for
-                            communities affected by disasters.
-                        </p>
-
-                        <div class="project-progress">
-
-                            <div class="progress">
-
-                                <div class="progress-bar"
-                                     style="width: 60%;">
-                                </div>
-
-                            </div>
-
-                            <small>
-                                Project progress: 60%
-                            </small>
-
-                        </div>
-
-                        <a href="#"
-                           class="project-link">
-
-                            View Project
-
-                            <i class="bi bi-arrow-right"></i>
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+        }
 
     </div>
 

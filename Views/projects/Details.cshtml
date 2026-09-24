@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Project Details";
+@model GiftOfTheGivers.Models.Project
+@{
+    ViewData["Title"] = Model.Title;
 }
 
 <!-- PROJECT DETAILS HEADER -->
@@ -21,18 +22,18 @@
             <div class="col-lg-7">
 
                 <span class="project-status-large">
-                    ONGOING PROJECT
+                    @(Model.Status?.ToUpperInvariant()) PROJECT
                 </span>
 
                 <h1>
-                    Gauteng Flood Relief
+                    @Model.Title
                 </h1>
 
                 <p class="project-location">
 
                     <i class="bi bi-geo-alt-fill me-2"></i>
 
-                    Gauteng, South Africa
+                    @Model.Location
 
                 </p>
 
@@ -40,8 +41,8 @@
 
             <div class="col-lg-5">
 
-                <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=900&q=80"
-                     alt="Gauteng Flood Relief"
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Title"
                      class="project-details-image">
 
             </div>
@@ -68,110 +69,78 @@
                 </span>
 
                 <h2>
-                    Providing Emergency Support
+                    @Model.Category
                 </h2>
 
                 <p>
-                    The Gauteng Flood Relief project provides emergency
-                    assistance to communities affected by severe flooding.
-                    The project focuses on providing essential resources
-                    to families who have been displaced or affected.
+                    @Model.Description
                 </p>
 
-                <p>
-                    Relief teams work with volunteers and community
-                    organisations to distribute food, clean water,
-                    hygiene supplies and other essential resources.
-                </p>
+                @if (Model.Objectives.Any())
+                {
+                    <!-- PROJECT OBJECTIVES -->
 
+                    <h3 class="details-heading">
+                        Project Objectives
+                    </h3>
 
-                <!-- PROJECT OBJECTIVES -->
+                    <div class="objective-list">
 
-                <h3 class="details-heading">
-                    Project Objectives
-                </h3>
+                        @foreach (var objective in Model.Objectives)
+                        {
+                            <div class="objective-item">
 
-                <div class="objective-list">
+                                <i class="bi bi-check-circle-fill"></i>
 
-                    <div class="objective-item">
+                                <span>
+                                    @objective
+                                </span>
 
-                        <i class="bi bi-check-circle-fill"></i>
-
-                        <span>
-                            Provide emergency food supplies.
-                        </span>
-
-                    </div>
-
-                    <div class="objective-item">
-
-                        <i class="bi bi-check-circle-fill"></i>
-
-                        <span>
-                            Provide clean drinking water.
-                        </span>
+                            </div>
+                        }
 
                     </div>
+                }
 
-                    <div class="objective-item">
+                @if (Model.Updates.Any())
+                {
+                    <!-- LATEST UPDATES -->
 
-                        <i class="bi bi-check-circle-fill"></i>
+                    <h3 class="details-heading">
+                        Latest Project Updates
+                    </h3>
 
-                        <span>
-                            Support displaced families.
-                        </span>
+                    @foreach (var update in Model.Updates.Take(3))
+                    {
+                        <div class="update-card">
 
-                    </div>
+                            <div class="update-header">
 
-                    <div class="objective-item">
+                                <div>
 
-                        <i class="bi bi-check-circle-fill"></i>
+                                    <strong>
+                                        @update.Title
+                                    </strong>
 
-                        <span>
-                            Coordinate community volunteers.
-                        </span>
+                                    <small>
+                                        Posted by @update.PostedBy
+                                    </small>
 
-                    </div>
+                                </div>
 
-                </div>
+                                <span>
+                                    @update.CreatedAt.ToString("dd MMM yyyy")
+                                </span>
 
+                            </div>
 
-                <!-- LATEST UPDATE -->
-
-                <h3 class="details-heading">
-                    Latest Project Update
-                </h3>
-
-                <div class="update-card">
-
-                    <div class="update-header">
-
-                        <div>
-
-                            <strong>
-                                Relief distribution completed
-                            </strong>
-
-                            <small>
-                                Posted by Employee
-                            </small>
+                            <p>
+                                @update.Body
+                            </p>
 
                         </div>
-
-                        <span>
-                            18 Aug 2026
-                        </span>
-
-                    </div>
-
-                    <p>
-                        Our relief team successfully distributed food
-                        parcels and clean water to affected families.
-                        Additional supplies are being prepared for the
-                        next distribution.
-                    </p>
-
-                </div>
+                    }
+                }
 
             </div>
 
@@ -188,7 +157,7 @@
                     <div class="progress project-details-progress">
 
                         <div class="progress-bar"
-                             style="width: 70%;">
+                             style="width: @Model.ProgressPercent%;">
                         </div>
 
                     </div>
@@ -196,7 +165,7 @@
                     <div class="progress-info">
 
                         <strong>
-                            70%
+                            @Model.ProgressPercent%
                         </strong>
 
                         <span>
@@ -216,7 +185,7 @@
                         <div>
 
                             <strong>
-                                45
+                                @Model.VolunteerCount
                             </strong>
 
                             <span>
@@ -235,7 +204,7 @@
                         <div>
 
                             <strong>
-                                850+
+                                @Model.ReliefPackagesDelivered.ToString("N0")+
                             </strong>
 
                             <span>
@@ -254,7 +223,7 @@
                         <div>
 
                             <strong>
-                                August 2026
+                                @Model.StartDate.ToString("MMMM yyyy")
                             </strong>
 
                             <span>
@@ -266,7 +235,9 @@
                     </div>
 
 
-                    <a href="#"
+                    <a asp-controller="Donation"
+                       asp-action="Checkout"
+                       asp-route-project="@Model.Id"
                        class="btn btn-primary-custom w-100 mt-4">
 
                         <i class="bi bi-heart-fill me-2"></i>
