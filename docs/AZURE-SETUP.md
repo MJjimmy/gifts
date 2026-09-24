@@ -4,6 +4,59 @@ Step-by-step instructions for the Azure deliverables. The **code is already in t
 solution** — these steps cover running it, deploying it, and capturing the required
 screenshots.
 
+---
+
+## Databases & connection strings (where your Azure details go)
+
+The app supports **two database providers**, switched by configuration — no code changes:
+
+| Setting | Value | When |
+|---|---|---|
+| `Database:Provider` | `Sqlite` *(default)* | Local development — zero setup, `giftsofthegivers.db` auto-created |
+| `Database:Provider` | `SqlServer` | Connecting to **Azure SQL** / SQL Server |
+
+### Local development with Azure SQL
+
+1. In `appsettings.json` (or better, `dotnet user-secrets`), replace the connection string:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=tcp:<your-server>.database.windows.net,1433;Initial Catalog=<your-db>;Persist Security Info=False;User ID=<your-admin>;Password=<your-password>;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  },
+  "Database": {
+    "Provider": "SqlServer"
+  }
+}
+```
+
+2. Run the app — schema and seed data are created automatically (`EnsureCreated`).
+3. Allow your machine in Azure SQL networking: Azure Portal → your SQL Server →
+   **Networking** → *Add your client IPv4 address*.
+
+> Tip: avoid committing your password. Use Visual Studio's *Connected Services →
+> User Secrets*, or `dotnet user-secrets set "ConnectionStrings:DefaultConnection" "..."`.
+
+### In Azure App Service (production)
+
+Don't paste secrets into `appsettings.json` for deployment. Set **Application
+Settings / Environment variables** on the App Service (Portal → App Service →
+Environment variables):
+
+| Name | Value |
+|---|---|
+| `ConnectionStrings__DefaultConnection` | your Azure SQL connection string |
+| `Database__Provider` | `SqlServer` |
+| `Functions__BaseUrl` | `https://<your-function-app>.azurewebsites.net` |
+
+(Notice the `__` separator — it maps to `:` in configuration.)
+
+The existing publish profile (`st10439690 - Web Deploy`) deploys the web app; add
+these app settings first so the deployed site connects to your database and the
+deployed function app.
+
+---
+
 The solution contains four projects:
 
 | Project | Purpose |
