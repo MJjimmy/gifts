@@ -8,9 +8,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Database (SQLite - swap the connection string for SQL Server when deploying to Azure).
+// Database provider is configurable: "Sqlite" (local development default) or "SqlServer"
+// (Azure SQL). See appsettings.json and docs/AZURE-SETUP.md.
+var databaseProvider = builder.Configuration["Database:Provider"] ?? "Sqlite";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    if (databaseProvider.Equals("SqlServer", StringComparison.OrdinalIgnoreCase))
+    {
+        options.UseSqlServer(connectionString);
+    }
+    else
+    {
+        options.UseSqlite(connectionString);
+    }
+});
 
 // HTTP client + client wrapper for the GiftOfTheGivers Azure Function App (see the Function project).
 builder.Services.AddHttpClient("functions");

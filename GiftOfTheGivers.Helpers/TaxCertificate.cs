@@ -34,17 +34,24 @@ public class TaxCertificate
 /// <summary>Request payload sent to the tax certificate function.</summary>
 public class TaxCertificateRequest
 {
+    /// <summary>Database id of the donation.</summary>
     public int DonationId { get; set; }
 
+    /// <summary>Public donation reference, e.g. GTG-20260924-K7QX2M.</summary>
     public string Reference { get; set; } = string.Empty;
 
+    /// <summary>Donor display name, or null when donating anonymously.</summary>
     public string? DonorName { get; set; }
 
+    /// <summary>Donated amount.</summary>
     public decimal Amount { get; set; }
 
+    /// <summary>ISO currency code of the donation.</summary>
     public string Currency { get; set; } = "ZAR";
 
+    /// <summary>"OneTime" or "Recurring".</summary>
     public string DonationType { get; set; } = "OneTime";
 
+    /// <summary>When the donation was captured (UTC).</summary>
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 }
