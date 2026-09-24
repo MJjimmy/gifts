@@ -1,0 +1,56 @@
+# Azure Pipelines - Continuous Integration for the Gift of the Givers solution.
+# Builds the web app, the Azure Functions project, the helper library, and runs the tests.
+# Section C of the assignment: restore dependencies, build the VS solution, run tests.
+
+trigger:
+  branches:
+    include:
+      - '*'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET 9 SDK'
+    inputs:
+      version: '9.0.x'
+      performMultiLevelLookup: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore dependencies'
+    inputs:
+      command: 'restore'
+      projects: 'GiftOfTheGivers.sln'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build solution'
+    inputs:
+      command: 'build'
+      projects: 'GiftOfTheGivers.sln'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run tests'
+    inputs:
+      command: 'test'
+      projects: 'GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj'
+      arguments: '--configuration $(buildConfiguration) --no-build'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Pack GiftOfTheGivers.Helpers (Section D)'
+    inputs:
+      command: 'pack'
+      packagesToPack: 'GiftOfTheGivers.Helpers/GiftOfTheGivers.Helpers.csproj'
+      packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+      versioningScheme: 'off'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish build artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'

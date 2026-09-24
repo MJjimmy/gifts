@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- NuGet package metadata (Section D: Azure Artifacts) -->
+    <PackageId>GiftOfTheGivers.Helpers</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Gift of the Givers Team</Authors>
+    <Company>Gift of the Givers</Company>
+    <Description>Utility helpers for the Gift of the Givers relief platform: donation references, tax certificate numbers and donation calculations.</Description>
+    <PackageTags>humanitarian;donations;helpers</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

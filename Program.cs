@@ -12,6 +12,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// HTTP client + client wrapper for the GiftOfTheGivers Azure Function App (see the Function project).
+builder.Services.AddHttpClient("functions");
+builder.Services.AddScoped<GiftOfTheGivers.Services.FunctionClient>();
+
 // ASP.NET Core Identity (cookie authentication + roles).
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {

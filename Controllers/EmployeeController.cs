@@ -1,5 +1,6 @@
 using GiftOfTheGivers.Data;
 using GiftOfTheGivers.Models;
+using GiftOfTheGivers.Services;
 using GiftOfTheGivers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,13 @@ namespace GiftOfTheGivers.Controllers
     {
         private readonly AppDbContext _db;
         private readonly UserManager<AppUser> _userManager;
+        private readonly FunctionClient _functionClient;
 
-        public EmployeeController(AppDbContext db, UserManager<AppUser> userManager)
+        public EmployeeController(AppDbContext db, UserManager<AppUser> userManager, FunctionClient functionClient)
         {
             _db = db;
             _userManager = userManager;
+            _functionClient = functionClient;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -132,6 +135,10 @@ namespace GiftOfTheGivers.Controllers
 
             _db.ProjectUpdates.Add(update);
             await _db.SaveChangesAsync();
+
+            // Serverless automation: forward the update to the Azure Function so it
+            // is logged in Azure Blob Storage. Silently skipped when offline.
+            await _functionClient.LogProjectUpdateAsync(project, update);
 
             TempData["Success"] = $"Your update was posted to {project.Title}.";
             return RedirectToAction("Details", "Projects", new { id = project.Id });

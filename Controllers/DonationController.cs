@@ -1,5 +1,7 @@
 using GiftOfTheGivers.Data;
+using GiftOfTheGivers.Helpers;
 using GiftOfTheGivers.Models;
+using GiftOfTheGivers.Services;
 using GiftOfTheGivers.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,10 +12,12 @@ namespace GiftOfTheGivers.Controllers
     public class DonationController : Controller
     {
         private readonly AppDbContext _db;
+        private readonly FunctionClient _functionClient;
 
-        public DonationController(AppDbContext db)
+        public DonationController(AppDbContext db, FunctionClient functionClient)
         {
             _db = db;
+            _functionClient = functionClient;
         }
 
         public async Task<IActionResult> Index()
@@ -81,7 +85,7 @@ namespace GiftOfTheGivers.Controllers
 
             var donation = new Donation
             {
-                Reference = GenerateReference(),
+                Reference = DonationReferenceGenerator.Create(DateTime.UtcNow),
                 DonationType = model.DonationType,
                 Amount = model.Amount,
                 Currency = model.Currency,
@@ -97,6 +101,12 @@ namespace GiftOfTheGivers.Controllers
 
             _db.Donations.Add(donation);
             await _db.SaveChangesAsync();
+
+            // Serverless automation: the Azure Function generates the dummy tax
+            // certificate. If the function app is not running, we fall back to
+            // generating it locally so the flow never breaks.
+            var certificate = await _functionClient.RequestTaxCertificateAsync(donation);
+            TempData["CertificateSource"] = certificate is null ? "local" : "function";
 
             return RedirectToAction(nameof(Confirmation), new { reference = donation.Reference });
         }
@@ -118,6 +128,9 @@ namespace GiftOfTheGivers.Controllers
                 return NotFound();
             }
 
+            ViewBag.CertificateNumber = TaxCertificateNumberFormatter.Format(donation.Id, donation.CreatedAt);
+            ViewBag.CertificateSource = TempData["CertificateSource"] as string ?? "local";
+
             return View(donation);
         }
 
@@ -133,17 +146,6 @@ namespace GiftOfTheGivers.Controllers
             projects.Insert(0, new SelectListItem { Value = "", Text = "General Relief Fund" });
 
             ViewBag.Projects = projects;
-        }
-
-        /// <summary>Generates a public donation reference, e.g. GTG-20260924-K7QX2M.</summary>
-        private static string GenerateReference()
-        {
-            const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            var suffix = new string(Enumerable.Range(0, 6)
-                .Select(_ => chars[Random.Shared.Next(chars.Length)])
-                .ToArray());
-
-            return $"GTG-{DateTime.UtcNow:yyyyMMdd}-{suffix}";
         }
     }
 }

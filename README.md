@@ -5,11 +5,26 @@ projects, donations, volunteer sign-ups and an employee portal.
 
 ## Tech stack
 
-| Layer    | Technology                                          |
-|----------|-----------------------------------------------------|
-| Web      | ASP.NET Core MVC (.NET 9), Razor views               |
-| Data     | Entity Framework Core 9 + SQLite (swap provider for SQL Server / Azure SQL) |
-| UI       | Bootstrap 5.3 + Bootstrap Icons                      |
+| Layer          | Technology                                          |
+|----------------|-----------------------------------------------------|
+| Web            | ASP.NET Core MVC (.NET 9), Razor views               |
+| Data           | Entity Framework Core 9 + SQLite (swap provider for SQL Server / Azure SQL) |
+| UI             | Bootstrap 5.3 + Bootstrap Icons                      |
+| Serverless     | Azure Functions (isolated worker, HTTP triggers)     |
+| Shared library | `GiftOfTheGivers.Helpers` (NuGet-packable)           |
+| Tests          | xUnit (`GiftOfTheGivers.Tests`)                      |
+| CI             | GitHub Actions + `azure-pipelines.yml` (Azure DevOps)|
+
+## Solution structure
+
+```
+GiftOfTheGivers/            Web app (MVC)
+Function/                   Azure Functions: TaxCertificate, LogProjectUpdate
+GiftOfTheGivers.Helpers/    Shared helper library (packaged as a NuGet package)
+GiftOfTheGivers.Tests/      xUnit tests
+docs/AZURE-SETUP.md         Step-by-step Azure deployment / DevOps guide
+azure-pipelines.yml         Azure Pipelines CI (restore, build, test, pack)
+```
 
 ## Getting started
 

@@ -1,0 +1,28 @@
+name: .NET CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore GiftOfTheGivers.sln
+
+      - name: Build solution
+        run: dotnet build GiftOfTheGivers.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj --configuration Release --no-build --verbosity normal
