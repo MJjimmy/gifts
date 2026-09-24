@@ -1,56 +1,62 @@
 # Azure Pipelines - Continuous Integration for the Gift of the Givers solution.
-# Builds the web app, the Azure Functions project, the helper library, and runs the tests.
-# Section C of the assignment: restore dependencies, build the VS solution, run tests.
+#
+# CI best practices demonstrated here:
+#   - CI trigger on all branches + PR validation on main
+#   - Reusable build template (templates/dotnet-build.yml)
+#   - Variables for configuration, secret variable group for sensitive values
+#   - Build, test and package steps kept in one reusable job
+#
+# Secrets management (see docs/AZURE-SETUP.md - "Pipeline secrets"):
+#   Store the Azure SQL connection string and other sensitive values in a
+#   variable group named "gotg-secrets" (Pipelines -> Library -> Variable group),
+#   then uncomment the group line below. Secret values are injected at run time
+#   and are masked in the logs.
 
 trigger:
   branches:
     include:
       - '*'
 
-pool:
-  vmImage: 'ubuntu-latest'
+pr:
+  branches:
+    include:
+      - main
+
+# variables:
+#   - group: gotg-secrets        # uncomment after creating the variable group
 
 variables:
   buildConfiguration: 'Release'
+  dotnetVersion: '9.0.x'
 
-steps:
-  - task: UseDotNet@2
-    displayName: 'Install .NET 9 SDK'
-    inputs:
-      version: '9.0.x'
-      performMultiLevelLookup: true
+stages:
+  - stage: Build
+    displayName: 'Build, Test & Pack'
+    jobs:
+      - template: templates/dotnet-build.yml
+        parameters:
+          buildConfiguration: $(buildConfiguration)
+          dotnetVersion: $(dotnetVersion)
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Restore dependencies'
-    inputs:
-      command: 'restore'
-      projects: 'GiftOfTheGivers.sln'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Build solution'
-    inputs:
-      command: 'build'
-      projects: 'GiftOfTheGivers.sln'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Run tests'
-    inputs:
-      command: 'test'
-      projects: 'GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Pack GiftOfTheGivers.Helpers (Section D)'
-    inputs:
-      command: 'pack'
-      packagesToPack: 'GiftOfTheGivers.Helpers/GiftOfTheGivers.Helpers.csproj'
-      packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
-      versioningScheme: 'off'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish build artifacts'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
+  # Future CD stage (optional): deploy the web app to the App Service and the
+  # functions to the Function App, injecting secrets from the variable group:
+  #
+  # - stage: Deploy
+  #   dependsOn: Build
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  #   jobs:
+  #     - deployment: DeployWebApp
+  #       environment: 'production'
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - download: current
+  #                 artifact: drop
+  #               - task: AzureWebApp@1
+  #                 inputs:
+  #                   azureSubscription: 'gotg-service-connection'
+  #                   appName: 'st10439690'
+  #                   package: '$(Pipeline.Workspace)/drop/web/*.zip'
+  #               # App settings such as ConnectionStrings__DefaultConnection should be
+  #               # set from the 'gotg-secrets' variable group on the App Service.

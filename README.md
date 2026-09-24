@@ -1,5 +1,10 @@
 # Gift of the Givers — Relief Platform
 
+[![.NET CI](https://github.com/MJjimmy/gifts/actions/workflows/dotnet.yml/badge.svg)](https://github.com/MJjimmy/gifts/actions/workflows/dotnet.yml)
+<!-- Azure Pipelines badge — after creating the pipeline in Azure DevOps, replace ORG/PROJECT/DEFINITION and uncomment:
+[![Build Status](https://dev.azure.com/ORG/PROJECT/_apis/build/status/DEFINITION?branchName=main)](https://dev.azure.com/ORG/PROJECT/_build/latest?definitionId=1&branchName=main)
+-->
+
 An ASP.NET Core 9.0 MVC web application for the **Gift of the Givers Foundation**: relief
 projects, donations, volunteer sign-ups and an employee portal.
 

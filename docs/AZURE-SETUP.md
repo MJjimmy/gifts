@@ -225,3 +225,70 @@ the csproj) and **used by the web app, the function app and the tests**.
 
 📸 **Screenshots to take:** the feed with the published package, the package
 version page, and the web app building with the PackageReference.
+
+### Versioning & retention conventions (top-band evidence)
+
+- The package uses [SemVer](https://semver.org/): `MAJOR.MINOR.PATCH`
+  (currently `1.0.0`). When you change helper code, bump the `Version` in
+  `GiftOfTheGivers.Helpers.csproj` — e.g. a new helper method → `1.1.0`.
+- Pre-release builds use a suffix: `1.1.0-beta.1` (via
+  `dotnet pack --version-suffix beta.1`).
+- Feed retention: Azure Artifacts feed → ⚙ Settings → **Retention policy** —
+  e.g. "keep latest 5 versions per package, unpick versions older than 30 days
+  not pinned". Screenshot the settings page for evidence.
+
+### Pipeline secrets management (Section C top band)
+
+1. Azure DevOps → Pipelines → **Library** → *+ Variable group* → name it
+   `gotg-secrets`. Add variables:
+   - `sql-connection-string` (🔒 secret) — your Azure SQL connection string
+   - `functions-base-url` — your Function App URL
+2. In `azure-pipelines.yml`, uncomment `variables: [- group: gotg-secrets]`.
+3. Secret values are masked in logs automatically — screenshot a run where a
+   secret is used but not displayed. The same values should be set on the App
+   Service as environment variables for the deployed site (see "In Azure App
+   Service (production)" above).
+
+### CI evidence: failure → recovery story
+
+"Builds include recovery from at least one failure" — this repository has a real,
+documented example on GitHub Actions:
+
+- Run 1 (`35936705937`) — **failed**: the web project's default glob compiled the
+  sibling projects' sources (duplicate top-level statements, missing packages).
+- Run 2 (`35936930323`) — **green** after the csproj glob fix (`71986af`).
+- Every push since is green via the README badge at the top of `README.md`.
+
+Screenshot the Azure Pipelines equivalent (red run → fix commit → green run) once
+your pipeline is connected.
+
+---
+
+## Function test matrix (A.2 evidence — capture one screenshot per row)
+
+With **both** `GiftOfTheGivers` and `Function` set as startup projects (F5),
+walk these cases in Postman / the browser and capture each response. These map to
+the "realistic donation cases" in the top marking band.
+
+| # | Case | Request | Expected |
+|---|------|---------|----------|
+| 1 | Standard donation | `POST /api/taxcertificate` — full JSON (id 12, ref `GTG-20260924-K7QX2M`, amount 750, ZAR, "Thabo Mokoena") | 200 + JSON certificate `GOTG-2026-0012` |
+| 2 | Anonymous donation | same but **no** `DonorName` | 200 + `"Anonymous Donor"` |
+| 3 | Recurring donation | `"DonationType": "Recurring"` | 200, type echoed as Recurring |
+| 4 | Missing reference | remove `Reference` | **400** `"Reference is required."` |
+| 5 | Zero amount | `"Amount": 0` | **400** `"Amount must be greater than zero."` |
+| 6 | Over limit | `"Amount": 2000000` | **400** amount limit message |
+| 7 | Bad currency | `"Currency": "RANDS"` | **400** 3-letter ISO code message |
+| 8 | Invalid JSON | body `not-json` | **400** `"Invalid JSON payload."` |
+| 9 | Browser certificate | `GET /api/taxcertificate?reference=GTG-TEST-123&amount=500&donor=Thabo` | 200 HTML certificate |
+| 10 | GET, bad amount | `GET ...&amount=abc` | **400** `'amount' must be a positive number` |
+| 11 | Update logging | `POST /api/logprojectupdate` — `{"projectId":1,"title":"Relief distribution completed","body":"..."}` | 200 + blob written to `project-update-logs` |
+| 12 | Update logging, no id | `POST` body `{}` | **400** `"projectId is required..."` |
+
+The Functions console window shows an `ILogger` entry for every request and
+validation failure — capture it alongside Postman for the "logging" evidence.
+
+Automated equivalents of the donation cases live in
+`GiftOfTheGivers.Tests/FunctionClientTests.cs` (7 tests, run by both pipelines).
+
+---

@@ -1,0 +1,59 @@
+# Reusable build template used by azure-pipelines.yml.
+# Kept as a separate template so other pipelines (e.g. a future CD pipeline)
+# can reuse the same restore/build/test/pack steps.
+
+parameters:
+  - name: buildConfiguration
+    type: string
+    default: 'Release'
+  - name: dotnetVersion
+    type: string
+    default: '9.0.x'
+
+jobs:
+  - job: Build
+    displayName: 'Build & Test'
+    workspace:
+      clean: outputs
+
+    steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET SDK ${{ parameters.dotnetVersion }}'
+        inputs:
+          version: '${{ parameters.dotnetVersion }}'
+          performMultiLevelLookup: true
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore dependencies'
+        inputs:
+          command: 'restore'
+          projects: 'GiftOfTheGivers.sln'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build solution (${{ parameters.buildConfiguration }})'
+        inputs:
+          command: 'build'
+          projects: 'GiftOfTheGivers.sln'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run tests'
+        inputs:
+          command: 'test'
+          projects: 'GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-build'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Pack GiftOfTheGivers.Helpers'
+        inputs:
+          command: 'pack'
+          packagesToPack: 'GiftOfTheGivers.Helpers/GiftOfTheGivers.Helpers.csproj'
+          packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
+          versioningScheme: 'off'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish build artifacts'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
