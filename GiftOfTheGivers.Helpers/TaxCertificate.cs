@@ -6,18 +6,25 @@ namespace GiftOfTheGivers.Helpers;
 /// </summary>
 public class TaxCertificate
 {
+    /// <summary>Formatted certificate number, e.g. GOTG-2026-0001.</summary>
     public string CertificateNumber { get; set; } = string.Empty;
 
+    /// <summary>Public donation reference, e.g. GTG-20260924-K7QX2M.</summary>
     public string DonationReference { get; set; } = string.Empty;
 
+    /// <summary>Display name of the donor (or "Anonymous Donor").</summary>
     public string DonorName { get; set; } = "Anonymous Donor";
 
+    /// <summary>Donated amount.</summary>
     public decimal Amount { get; set; }
 
+    /// <summary>ISO currency code of the donation.</summary>
     public string Currency { get; set; } = "ZAR";
 
+    /// <summary>"OneTime" or "Recurring".</summary>
     public string DonationType { get; set; } = "OneTime";
 
+    /// <summary>When the certificate was issued (UTC).</summary>
     public DateTime IssuedAtUtc { get; set; } = DateTime.UtcNow;
 
     /// <summary>Formatted amount including the currency symbol, e.g. "R500.00".</summary>

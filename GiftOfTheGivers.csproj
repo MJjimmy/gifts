@@ -9,6 +9,16 @@
     <ProjectReference Include="GiftOfTheGivers.Helpers\GiftOfTheGivers.Helpers.csproj" />
   </ItemGroup>
 
+  <!-- The solution keeps all projects in one folder; stop this project's default
+       glob from compiling the files that belong to the sibling projects. -->
+  <ItemGroup>
+    <Compile Remove="Function\**;GiftOfTheGivers.Helpers\**;GiftOfTheGivers.Tests\**" />
+    <Content Remove="Function\**;GiftOfTheGivers.Helpers\**;GiftOfTheGivers.Tests\**" />
+    <EmbeddedResource Remove="Function\**;GiftOfTheGivers.Helpers\**;GiftOfTheGivers.Tests\**" />
+    <None Include="Function\**;GiftOfTheGivers.Tests\**" Exclude="Function\bin\**;Function\obj\**;GiftOfTheGivers.Tests\bin\**;GiftOfTheGivers.Tests\obj\**" />
+    <None Remove="GiftOfTheGivers.Helpers\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
