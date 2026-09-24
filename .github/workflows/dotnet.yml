@@ -57,5 +57,24 @@ jobs:
             exit 1
           fi
 
-      - name: Run tests
-        run: dotnet test GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj --configuration Release --no-build --verbosity normal
+      - name: Run tests (log captured)
+        id: test
+        continue-on-error: true
+        run: dotnet test GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj --configuration Release --no-build --verbosity normal 2>&1 | tee test.log
+
+      - name: Test diagnostics
+        if: always()
+        run: |
+          grep -A6 "^  Failed " test.log | while IFS= read -r line; do echo "::error::$line"; done
+          {
+            echo "## Test diagnostics"
+            echo '```'
+            grep -B2 -A10 "^  Failed " test.log | head -80 || echo "(no failed tests)"
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Fail job if tests failed
+        if: always()
+        run: |
+          if [ "${{ steps.test.outcome }}" = "failure" ]; then exit 1; fi
+
