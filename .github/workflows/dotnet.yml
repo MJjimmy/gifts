@@ -18,30 +18,44 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore GiftOfTheGivers.sln
+      - name: Restore dependencies (log captured)
+        id: restore
+        continue-on-error: true
+        run: dotnet restore GiftOfTheGivers.sln 2>&1 | tee restore.log
 
-      - name: Build solution (log captured for diagnostics)
+      - name: Restore diagnostics
+        if: always()
+        run: |
+          grep -E ": error" restore.log | while IFS= read -r line; do echo "::error::$line"; done
+          {
+            echo "## Restore diagnostics"
+            echo '```'
+            grep -E ": error" restore.log | head -30 || echo "(no restore errors)"
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Build solution (log captured)
+        id: build
         continue-on-error: true
         run: dotnet build GiftOfTheGivers.sln --configuration Release --no-restore 2>&1 | tee build.log
 
-      - name: Fail job if the build failed
+      - name: Build diagnostics
         if: always()
         run: |
-          if grep -q "Build FAILED" build.log 2>/dev/null; then
-            echo "build failed" && exit 1
-          fi
-
-      - name: Summarize build errors (visible in check-run summary)
-        if: always()
-        run: |
+          grep -E ": error " build.log | while IFS= read -r line; do echo "::error::$line"; done
           {
             echo "## Build diagnostics"
             echo '```'
-            grep -E ": error " build.log | head -50 || echo "(no compile errors captured)"
+            grep -E ": error " build.log | head -40 || echo "(no compile errors)"
             echo '```'
-            grep -E "Build succeeded|Build FAILED|Warning\(s\)|Error\(s\)" build.log | head -5 || true
           } >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Fail job if restore or build failed
+        if: always()
+        run: |
+          if [ "${{ steps.restore.outcome }}" = "failure" ] || [ "${{ steps.build.outcome }}" = "failure" ]; then
+            exit 1
+          fi
 
       - name: Run tests
         run: dotnet test GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj --configuration Release --no-build --verbosity normal
