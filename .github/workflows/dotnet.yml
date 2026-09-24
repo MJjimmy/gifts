@@ -21,8 +21,27 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore GiftOfTheGivers.sln
 
-      - name: Build solution
-        run: dotnet build GiftOfTheGivers.sln --configuration Release --no-restore
+      - name: Build solution (log captured for diagnostics)
+        continue-on-error: true
+        run: dotnet build GiftOfTheGivers.sln --configuration Release --no-restore 2>&1 | tee build.log
+
+      - name: Fail job if the build failed
+        if: always()
+        run: |
+          if grep -q "Build FAILED" build.log 2>/dev/null; then
+            echo "build failed" && exit 1
+          fi
+
+      - name: Summarize build errors (visible in check-run summary)
+        if: always()
+        run: |
+          {
+            echo "## Build diagnostics"
+            echo '```'
+            grep -E ": error " build.log | head -50 || echo "(no compile errors captured)"
+            echo '```'
+            grep -E "Build succeeded|Build FAILED|Warning\(s\)|Error\(s\)" build.log | head -5 || true
+          } >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Run tests
         run: dotnet test GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj --configuration Release --no-build --verbosity normal
