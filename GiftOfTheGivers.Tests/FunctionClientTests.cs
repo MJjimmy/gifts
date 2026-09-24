@@ -97,9 +97,10 @@ public class FunctionClientTests
         await client.RequestTaxCertificateAsync(RealisticDonation());
 
         Assert.NotNull(capturedBody);
-        Assert.Contains("\"Reference\":\"GTG-20260924-K7QX2M\"", capturedBody);
-        Assert.Contains("\"Amount\":750", capturedBody);
-        Assert.Contains("\"Currency\":\"ZAR\"", capturedBody);
+        // PostAsJsonAsync uses JsonSerializerDefaults.Web -> camelCase property names.
+        Assert.Contains("\"reference\":\"GTG-20260924-K7QX2M\"", capturedBody);
+        Assert.Contains("\"amount\":750", capturedBody);
+        Assert.Contains("\"currency\":\"ZAR\"", capturedBody);
     }
 
     [Fact]

@@ -21,7 +21,9 @@ jobs:
       - name: Restore dependencies (log captured)
         id: restore
         continue-on-error: true
-        run: dotnet restore GiftOfTheGivers.sln 2>&1 | tee restore.log
+        run: |
+          set -o pipefail
+          dotnet restore GiftOfTheGivers.sln 2>&1 | tee restore.log
 
       - name: Restore diagnostics
         if: always()
