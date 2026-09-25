@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -7,13 +7,7 @@ namespace GiftOfTheGivers.Functions;
 
 /// <summary>
 /// Logs employee project updates to Azure Blob Storage.
-///
-/// Called by the web app whenever an employee posts a project update:
-///   POST /api/logprojectupdate
-///
-/// The payload is appended as a JSON blob in the "project-update-logs" container
-/// (configured via the AzureWebJobsStorage connection string). Invalid payloads
-/// receive a 400 response and are not written to storage.
+/// POST /api/logprojectupdate
 /// </summary>
 public class LogProjectUpdateFunction
 {
@@ -34,7 +28,8 @@ public class LogProjectUpdateFunction
 
         try
         {
-            payload = JsonSerializer.Deserialize<JsonElement>(await new StreamReader(request.Body).ReadToEndAsync());
+            var body = await new StreamReader(request.Body).ReadToEndAsync();
+            payload = JsonSerializer.Deserialize<JsonElement>(string.IsNullOrWhiteSpace(body) ? "{}" : body);
 
             if (payload.ValueKind != JsonValueKind.Object)
             {
@@ -61,7 +56,6 @@ public class LogProjectUpdateFunction
             };
         }
 
-        // Normalise into a log record with a timestamp.
         var logRecord = new
         {
             loggedAtUtc = DateTime.UtcNow,
@@ -71,7 +65,6 @@ public class LogProjectUpdateFunction
 
         _logger.LogInformation("Project update for project {ProjectId} accepted for logging.", projectId);
 
-        // The BlobContent property is written to blob storage by the [BlobOutput] binding.
         return new LogProjectUpdateResult
         {
             BlobContent = JsonSerializer.Serialize(logRecord, new JsonSerializerOptions { WriteIndented = true }),
@@ -100,5 +93,6 @@ public class LogProjectUpdateResult
     [BlobOutput("project-update-logs/{DateTime}.json", Connection = "AzureWebJobsStorage")]
     public string? BlobContent { get; set; }
 
+    [HttpResult]
     public HttpResponseData? HttpResponse { get; set; }
 }
