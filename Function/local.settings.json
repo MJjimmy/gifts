@@ -2,6 +2,8 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "DefaultConnection": "Server=tcp:st10439690-server.database.windows.net,1433;Initial Catalog=APPR_DB;Persist Security Info=False;User ID=st10439690-server;Password=Malatji@947!!Noflex;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
+  
 }

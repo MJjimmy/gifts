@@ -1,3 +1,4 @@
+using GiftOfTheGivers.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace GiftOfTheGivers.ViewModels;
@@ -36,7 +37,7 @@ public class VolunteerSignupViewModel
     [Display(Name = "Area of Interest")]
     public string AreaOfInterest { get; set; } = string.Empty;
 
-    [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to be contacted regarding volunteer opportunities.")]
+    [MustBeTrue(ErrorMessage = "Please agree to be contacted regarding volunteer opportunities.")]
     [Display(Name = "Agreement")]
     public bool Agreement { get; set; }
 }

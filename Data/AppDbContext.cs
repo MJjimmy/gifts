@@ -1,4 +1,4 @@
-using GiftOfTheGivers.Models;
+﻿using GiftOfTheGivers.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +20,9 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // The production database keeps the design's Donations/Volunteers tables,
+        // so the application's versions of these tables use these names:
 
         modelBuilder.Entity<Project>(entity =>
         {

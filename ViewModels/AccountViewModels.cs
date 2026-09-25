@@ -1,3 +1,5 @@
+using GiftOfTheGivers.Validation;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace GiftOfTheGivers.ViewModels;
@@ -48,7 +50,7 @@ public class RegisterViewModel
     [Compare(nameof(Password), ErrorMessage = "The passwords do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 
-    [Range(typeof(bool), "true", "true", ErrorMessage = "Please agree to the terms and conditions.")]
+    [MustBeTrue(ErrorMessage = "Please agree to the terms and conditions.")]
     [Display(Name = "Terms")]
     public bool AgreeToTerms { get; set; }
 }
